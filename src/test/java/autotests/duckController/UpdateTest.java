@@ -1,15 +1,14 @@
 package autotests.duckController;
 
-import autotests.duckController.helper.duckControllerHelper;
+import autotests.clients.DuckControllerHelper;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
 
-public class Update extends TestNGCitrusSpringSupport implements duckControllerHelper {
+public class UpdateTest extends DuckControllerHelper {
 
     @Test(description = "Проверка обновления уточки (высота и цвет)")
     @CitrusTest
