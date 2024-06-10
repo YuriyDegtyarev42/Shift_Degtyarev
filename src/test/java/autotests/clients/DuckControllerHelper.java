@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
@@ -169,37 +170,37 @@ public class DuckControllerHelper extends TestNGCitrusSpringSupport {
         );
     }
 
-    public void validateDuckResponseString(TestCaseRunner runner, int statusCode, String string) {
+    public void validateDuckResponseString(TestCaseRunner runner, HttpStatus statusCode, String string) {
         runner.$(http()
                 .client(yellowDuckService)
                 .receive()
                 .response()
                 .message()
-                .statusCode(statusCode)
+                .statusCode(statusCode.value())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(string)
         );
     }
 
-    public void validateDuckResponsePayload(TestCaseRunner runner, int statusCode, String payload) {
+    public void validateDuckResponseResources(TestCaseRunner runner, HttpStatus statusCode, String payload) {
         runner.$(http()
                 .client(yellowDuckService)
                 .receive()
                 .response()
                 .message()
-                .statusCode(statusCode)
+                .statusCode(statusCode.value())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new ClassPathResource(payload))
         );
     }
 
-    public void validateDuckResponseResources(TestCaseRunner runner, int statusCode, Object resource) {
+    public void validateDuckResponsePayload(TestCaseRunner runner, HttpStatus statusCode, Object resource) {
         runner.$(http()
                 .client(yellowDuckService)
                 .receive()
                 .response()
                 .message()
-                .statusCode(statusCode)
+                .statusCode(statusCode.value())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new ObjectMappingPayloadBuilder(resource, new ObjectMapper()))
         );
