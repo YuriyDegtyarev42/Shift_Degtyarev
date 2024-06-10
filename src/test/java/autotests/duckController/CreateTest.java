@@ -30,7 +30,7 @@ public class CreateTest extends DuckControllerHelper {
         getIDFromDB(runner, "select * from duck where height = " + height);
         clearDB(runner, "${duckId}");
 
-        validateDuckResponseResources(runner, HttpStatus.OK, duck.id("@isNumber()@"));
+        validateDuckResponseResources(runner, HttpStatus.OK, duck.id("@isNumber()@").toString());
         dbValidateDuck(runner, "${duckId}", color, height, material, sound, wingsState);
     }
 
@@ -47,7 +47,7 @@ public class CreateTest extends DuckControllerHelper {
         getIDFromDB(runner, "select * from duck where height = " + height);
         clearDB(runner, "${duckId}");
 
-        validateDuckResponseResources(runner, HttpStatus.OK, duck.id("@isNumber()@"));
+        validateDuckResponseResources(runner, HttpStatus.OK, duck.id("@isNumber()@").toString());
         dbValidateDuck(runner, "${duckId}", color, height, material, sound, wingsState);
     }
 
