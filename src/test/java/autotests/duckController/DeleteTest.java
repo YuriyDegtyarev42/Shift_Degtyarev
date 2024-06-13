@@ -18,13 +18,15 @@ public class DeleteTest extends DuckControllerHelper {
     @CitrusTest
     public void deleteDuck(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 5.6, 'wood', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 5.6, 'wood', 'quack', 'ACTIVE')");
 
-        duckDelete(runner, "${duckId}");
+        deleteDuckByRequest(runner);
 
-        validateDuckResponseResources(runner, HttpStatus.OK, "DeleteResponses/DeleteResponse.json");
-        dbSQLQueryValidate(runner, "select count(*) as ducks_count from duck where id = ${duckId}", "ducks_count", "0");
+        validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
+                "  \"message\": \"Duck is deleted\"\n" +
+                "}");
+        validateSQL(runner, "select count(*) as ducks_count from duck where id = ${duckId}", "ducks_count", "0");
     }
 
 }

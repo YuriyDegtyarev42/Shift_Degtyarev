@@ -18,22 +18,24 @@ public class QuackTest extends DuckControllerHelper {
     @CitrusTest
     public void quackEvenNumberDuck(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)2");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
 
-        quack(runner, "${duckId}", "1", "1");
+        quackDuckByRequest(runner, "${duckId}", "1", "1");
 
-        validateDuckResponseResources(runner, HttpStatus.OK, "QuackResponses/EvenNumberQuackResponse.json");
+        validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
+                "  \"sound\": \"quack\"\n" +
+                "}");
     }
 
     @Test(description = "Проверка того, что уточка с нечетным id крякает")
     @CitrusTest
     public void quackOddNumberDuck(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)1");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
 
-        quack(runner, "${duckId}", "1", "1");
+        quackDuckByRequest(runner, "${duckId}", "1", "1");
 
         validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
                 "  \"sound\": \"quack\"\n" +

@@ -18,20 +18,24 @@ public class SwimTest extends DuckControllerHelper {
     @CitrusTest
     public void swimExistDuck(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
 
-        swim(runner, "${duckId}");
+        swimDuckByRequest(runner, "${duckId}");
 
-        validateDuckResponseResources(runner, HttpStatus.OK, "SwimResponses/ExistSwimResponse.json");
+        validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
+                "  \"message\": \"I’m swimming\"\n" +
+                "}");
     }
 
     @Test(description = "Проверка плавания у несуществующей уточки")
     @CitrusTest
     public void swimNotExistDuck(@Optional @CitrusResource TestCaseRunner runner, @Optional @CitrusResource TestContext context) {
-        swim(runner, String.valueOf(481516234));
+        swimDuckByRequest(runner, String.valueOf(481516234));
 
-        validateDuckResponseResources(runner, HttpStatus.NOT_FOUND, "SwimResponses/NotExistSwimResponse.json");
+        validateDuckResponseString(runner, HttpStatus.NOT_FOUND, "{\n" +
+                "  \"message\": \"Paws are not found ((((\"\n" +
+                "}");
     }
 
 }
