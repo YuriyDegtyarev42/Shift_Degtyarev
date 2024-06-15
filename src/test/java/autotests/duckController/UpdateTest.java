@@ -20,30 +20,30 @@ public class UpdateTest extends DuckControllerHelper {
     @CitrusTest
     public void updateDuckHeightColor(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
 
-        updateDuck(runner, "red", 8.2, "${duckId}", "rubber", "quack", WingsState.ACTIVE);
+        updateDuckByRequest(runner, "purple", 1.4, "${duckId}", "rubber", "quack", WingsState.ACTIVE);
 
         validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
                 "  \"message\": \"Duck with id = ${duckId} is updated\"\n" +
                 "}");
-        dbValidateDuck(runner, "${duckId}", "red", 8.2, "rubber", "quack", WingsState.ACTIVE);
+        validateDBDuck(runner, "${duckId}", "purple", 1.4, "rubber", "quack", WingsState.ACTIVE);
     }
 
     @Test(description = "Проверка обновления уточки (звук и цвет)")
     @CitrusTest
     public void updateDuckSoundColor(@Optional @CitrusResource TestCaseRunner runner, @Optional @CitrusResource TestContext context) {
         runner.variable("duckId", "citrus:randomNumber(4, false)");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
 
-        updateDuck(runner, "purple", 1.1, "${duckId}", "rubber", "bark", WingsState.ACTIVE);
+        updateDuckByRequest(runner, "purple", 1.1, "${duckId}", "rubber", "bark", WingsState.ACTIVE);
 
         validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
                 "  \"message\": \"Duck with id = ${duckId} is updated\"\n" +
                 "}");
-        dbValidateDuck(runner, "${duckId}", "purple", 1.1, "rubber", "bark", WingsState.ACTIVE);
+        validateDBDuck(runner, "${duckId}", "purple", 1.1, "rubber", "bark", WingsState.ACTIVE);
     }
 
 }

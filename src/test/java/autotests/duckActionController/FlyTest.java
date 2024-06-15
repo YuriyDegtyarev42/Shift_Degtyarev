@@ -18,25 +18,27 @@ public class FlyTest extends DuckControllerHelper {
     @CitrusTest
     public void successfulFly(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
 
-        fly(runner, "${duckId}");
+        flyDuckByRequest(runner, "${duckId}");
 
-        validateDuckResponseResources(runner, HttpStatus.OK, "FlyResponses/ActiveResponse.json");
+        validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
+                "  \"message\": \"I'm flying\"\n" +
+                "}");
     }
 
     @Test(description = "Проверка неуспешного полета")
     @CitrusTest
     public void unsuccessfulFly(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'FIXED')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'FIXED')");
 
-        fly(runner,"${duckId}");
+        flyDuckByRequest(runner, "${duckId}");
 
         validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
-                "  \"message\": \"I can not fly\"\n" +
+                "  \"message\": \"I can't fly\"\n" +
                 "}");
     }
 
@@ -44,12 +46,14 @@ public class FlyTest extends DuckControllerHelper {
     @CitrusTest
     public void undefinedFly(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'UNDEFINED')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'UNDEFINED')");
 
-        fly(runner,"${duckId}");
+        flyDuckByRequest(runner,"${duckId}");
 
-        validateDuckResponseResources(runner, HttpStatus.OK, "FlyResponses/UndefinedResponse.json");
+        validateDuckResponseString(runner, HttpStatus.OK, "{\n" +
+                "  \"message\": \"Wings are not detected\"\n" +
+                "}");
     }
 
 }

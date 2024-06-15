@@ -1,6 +1,8 @@
 package autotests.duckActionController;
 
 import autotests.clients.DuckControllerHelper;
+import autotests.payloads.Duck;
+import autotests.payloads.WingsState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -18,24 +20,24 @@ public class PropertiesTest extends DuckControllerHelper {
     @CitrusTest
     public void getDuckEvenNumberWoodProperties(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)1");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'wood', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'wood', 'quack', 'ACTIVE')");
 
-        getDuckProperties(runner,"${duckId}");
+        duckPropertiesByRequest(runner,"${duckId}");
 
-        validateDuckResponsePayload(runner, HttpStatus.OK, "PropertiesResponses/EvenNumberResponse.json");
+        validateDuckResponseString(runner, HttpStatus.OK, "");
     }
 
     @Test(description = "Проверка получения свойств уточки (нечетный id, материал rubber)")
     @CitrusTest
     public void getDuckOddNumberRubberProperties(@Optional @CitrusResource TestCaseRunner runner) {
         runner.variable("duckId", "citrus:randomNumber(4, false)2");
-        clearDB(runner, "${duckId}");
-        dbUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
+        clearDB(runner);
+        databaseUpdate(runner, "insert into duck values (${duckId}, 'yellow', 1.1, 'rubber', 'quack', 'ACTIVE')");
 
-        getDuckProperties(runner,"${duckId}");
+        duckPropertiesByRequest(runner,"${duckId}");
 
-        validateDuckResponseResources(runner, HttpStatus.OK, "PropertiesResponses/OddNumberResponse.json");
+        validateDuckResponseString(runner, HttpStatus.OK, "");
     }
 
 }

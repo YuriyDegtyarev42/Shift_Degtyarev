@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Accessors(fluent = true)
+@Accessors(fluent = true,chain = true)
 public class DuckListID {
     @JsonProperty
     List<Integer> list;

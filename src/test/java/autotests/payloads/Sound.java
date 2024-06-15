@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 
 @Getter
 @Setter
-@Accessors(fluent = true)
+@Accessors(fluent = true,chain = true)
 public class Sound {
     @JsonProperty
     String sound;
